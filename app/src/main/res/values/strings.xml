@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Quizzed</string>
+    <string name="hint">Name</string>
+    <string name="optionD">D</string>
+    <string name="optionC">C</string>
+    <string name="optionB">B</string>
+    <string name="optionA">A</string>
+    <string name="math_quiz">Math Quiz</string>
+    <string name="submit">Submit</string>
+</resources>

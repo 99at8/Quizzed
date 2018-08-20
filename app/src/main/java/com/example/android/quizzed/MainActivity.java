@@ -23,16 +23,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
-
-    // Create variables and constants
     QuestionBank allQuestions = new QuestionBank();
     String pickedAnswer = "";
     int questionNumber = 0;
     int score = 0;
     final int numberOfQuestions = allQuestions.list.size();
     boolean noRadioSelected = false;
-
-    // Create Views
     TextView questionLabel, scoreLabel, progressLabel;
     View progressBar;
     LinearLayout buttonLayout, checkBoxLayout;
@@ -46,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Attach views to XML
         questionLabel = findViewById(R.id.question_textview);
         scoreLabel = findViewById(R.id.score_label);
         progressLabel = findViewById(R.id.progress_label);
@@ -60,19 +55,14 @@ public class MainActivity extends AppCompatActivity {
         radioButtonB = findViewById(R.id.radiobutton_b);
         radioButtonC = findViewById(R.id.radiobutton_c);
         radioButtonD = findViewById(R.id.radiobutton_d);
-        // Deal with Screen rotations
         if (savedInstanceState != null) {
             allQuestions.list = (ArrayList<Question>) savedInstanceState.getSerializable("questionList");
             score = savedInstanceState.getInt("score");
             questionNumber = savedInstanceState.getInt("questionNumber");
         } else {
-            // This is first run, shuffle the questions
-            // Shuffle the array to change the order of the questions
             Collections.shuffle(allQuestions.list);
         }
-        // Hide all the input views
         hideAll();
-        // Ask the first question
         nextQuestion();
     }
 
@@ -102,8 +92,6 @@ public class MainActivity extends AppCompatActivity {
     private void showButtons() {
         buttonLayout.setVisibility(View.VISIBLE);
     }
-
-    // Display Checkbox View and Submit Button
     private void showCheckBoxes() {
         checkBoxLayout.setVisibility(View.VISIBLE);
         submitButton.setVisibility(View.VISIBLE);
@@ -124,13 +112,11 @@ public class MainActivity extends AppCompatActivity {
     // Display next question and enable appropriate input mechanism. Else if game is over display alert
     private void nextQuestion() {
         if (questionNumber <= numberOfQuestions - 1) {
-            // Build out Question
             String fullQuestion = allQuestions.list.get(questionNumber).questionSet.get("question").toString();
             fullQuestion += "\n\na) " + allQuestions.list.get(questionNumber).questionSet.get("a");
             fullQuestion += "\nb) " + allQuestions.list.get(questionNumber).questionSet.get("b");
             fullQuestion += "\nc) " + allQuestions.list.get(questionNumber).questionSet.get("c");
             fullQuestion += "\nd) " + allQuestions.list.get(questionNumber).questionSet.get("d");
-            // Determine which Input mode to display
             QuestionType type = (QuestionType) allQuestions.list.get(questionNumber).questionSet.get("format");
             switch (type) {
                 case BUTTON:
@@ -144,14 +130,12 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case TEXTENTRY:
                     showTextEntry();
-                    // Rewrite question for this format
                     fullQuestion = allQuestions.list.get(questionNumber).questionSet.get("question").toString();
                     break;
             }
             questionLabel.setText(fullQuestion);
             updateUI();
         } else {
-            // No more questions, Quiz over! Display Alert.
             hideAll();
             scoreLabel.setText("Score: " + score);
             AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
@@ -171,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Verify answer for all questions
     public void submitPressed(View view) {
-        // check text edit or checkbox question
         String correctAnswer = allQuestions.list.get(questionNumber).questionSet.get("answer").toString();
         QuestionType type = (QuestionType) allQuestions.list.get(questionNumber).questionSet.get("format");
         if (type == QuestionType.TEXTENTRY) {
@@ -179,10 +162,7 @@ public class MainActivity extends AppCompatActivity {
             String proposedAnswer = answerField.getText().toString();
             pickedAnswer = proposedAnswer.toLowerCase();
             checkAnswer(correctAnswer.toLowerCase());
-            // Reset answer field to nothing for future questions and or runs
             answerField.setText("");
-            // For Checkbox, determine which combination was chosen and compare score.
-            // After calculated, unselect checkbox
         } else if (type == QuestionType.CHECKBOX) {
             int checkBoxSum = 0;
             CheckBox buttonA = findViewById(R.id.checkbox_a);
@@ -218,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
                 noRadioSelected = false;
                 return;
             } else {
-                // check answer
                 checkAnswer(correctAnswer);
             }
         } else if (type == QuestionType.BUTTON) {
@@ -242,15 +221,12 @@ public class MainActivity extends AppCompatActivity {
         }
         hideAll();
         questionNumber += 1;
-        // introduce delay
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 nextQuestion();
             }
         }, 2000);
-        // In case you don't want the delay comment above line and uncomment below line
-//        nextQuestion();
     }
 
     private void checkRadioButtons() {
@@ -296,13 +272,9 @@ public class MainActivity extends AppCompatActivity {
         scoreLabel.setText("Score: " + score);
         progressLabel.setText(questionNumber + 1 + " / " + numberOfQuestions);
         int parentWidth = ((View) progressBar.getParent()).getMeasuredWidth();
-        // On first run parentWidth is always 0 (not on reset), so get screenwidth for this run.
         if (parentWidth == 0) {
             parentWidth = getScreenWidth();
         }
-        // Update progress Bar to show how far in the quiz we are (pre animation)
-//        progressBar.getLayoutParams().width = parentWidth / numberOfQuestions * (questionNumber + 1);
-        // Updated to use animation instead
         ValueAnimator anim = ValueAnimator.ofInt(progressBar.getMeasuredWidth(), parentWidth / numberOfQuestions * (questionNumber + 1));
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override

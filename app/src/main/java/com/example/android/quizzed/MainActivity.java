@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     final Handler handler = new Handler();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         radioButtonB = findViewById(R.id.radiobutton_b);
         radioButtonC = findViewById(R.id.radiobutton_c);
         radioButtonD = findViewById(R.id.radiobutton_d);
-
 
         // Deal with Screen rotations
         if (savedInstanceState != null) {
@@ -160,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             questionLabel.setText(fullQuestion);
-//            questionLabel.setTextColor(Color.RED);  // Test line to confirm how Color works.
 
             updateUI();
 
@@ -294,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
         radioGroup.clearCheck();
     }
 
-
     // Verify if Answer was correct and inform user then add score
     private void checkAnswer(String correctAnswer) {
 
@@ -318,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
         }
     }
-
 
     // Update scores and other UI Elements
     private void updateUI() {

@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         // Ask the first question
         nextQuestion();
     }
-    
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
